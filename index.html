@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="High-Resolution Frame Interpolation with Diffusion">
+  <meta name="keywords" content="high, resolution, frame, interpolation, diffusion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>High-Resolution Frame Interpolation with Patch-based Cascaded Diffusion</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/video_comparison.js"></script>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎥</text></svg>">
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <h1 class="title is-1 publication-title">High-Resolution Frame Interpolation<br>with Diffusion</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://hurjunhwa.github.io/">Junhwa Hur*</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=LQvi5XAAAAAJ&hl=en">Charles Herrmann*</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="http://saurabhsaxena.org/">Saurabh Saxena</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=MnXc4JQAAAAJ&hl=en">Janne Kontkanen</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://www.wslai.net/">Wei-Sheng (Jason) Lai</a>,&nbsp;</span>
+              <br>
+              <span class="author-block">
+                <a href="https://www.yichangshih.com/">Yichang Shih</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://people.csail.mit.edu/mrub/">Michael Rubinstein</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://www.cs.toronto.edu/~fleet/">David J. Fleet</a>,&nbsp;</span>
+              <span class="author-block">
+                <a href="https://deqings.github.io/">Deqing Sun</a></span>
+
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Google</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="about:blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="about:blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+
+    
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="content has-text-justified">
+        <div class="content has-text-centered is-size-7-mobile">
+          (Interactive visualization. Hover or tap to move the zoom cursor over the ground truth.)
+        </div>
+
+        <!-- Zoom Container. -->
+        <div class="zoom-container" data-gt-img-src="./static/image/lamor/1_gt_witharrow.png" data-zoom-factor="1"
+          data-default-u="0.18" data-default-v="0.55" id="teaser-zoom-container">
+          <div class="columns is-mobile is-marginless">
+            <div class="column is-one-third">
+              <div class="zoom-gt-container">
+                <img class="zoom-gt-img" src="./static/image/lamor/1_input.gif" alt="Ground Truth" />
+                <canvas></canvas>
+              </div>
+            </div>
+            <div class="column is-one-sixth">
+              <div class="zoom-lens" style="background-image: url(./static/image/lamor/1_ema.png)">
+              </div>
+            </div>
+            <div class="column is-one-sixth">
+              <div class="zoom-lens" style="background-image: url(./static/image/lamor/1_upr.png)">
+              </div>
+            </div>
+            <div class="column is-one-sixth">
+              <div class="zoom-lens" style="background-image: url(./static/image/lamor/1_ours.png)">
+              </div>
+            </div>
+            <div class="column is-one-sixth">
+              <div class="zoom-lens" style="background-image: url(./static/image/lamor/1_gt.png)">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="columns is-mobile has-text-centered is-marginless is-vcentered is-size-7-mobile">
+          <div class="column is-one-third">(Up) Two input frames<br>(Down) Ground truth</div>
+          <div class="column is-one-sixth">EMA-VFI</div>
+          <div class="column is-one-sixth">UPR-Net</div>
+          <div class="column is-one-sixth"><b>HiFI (Ours)</b></div>
+          <div class="column is-one-sixth">Ground truth</div>
+        </div>
+        <!-- / Zoom Container. -->
+        <br>
+        <!-- Abstract. -->
+        <div class="content has-text-justified">
+          <p>
+            <font size=5>W</font>e introduce <b>HiFI</b>, a patch-based cascaded pixel diffusion approach for <b>Hi</b>gh resolution <b>F</b>rame <b>I</b>nterpolation, that generalizes across diverse resolutions up to 8K, a wide range of scene motions, and a broad spectrum of challenging scenes.
+            HiFI helps significantly with high resolution and complex repeated textures that require global context.
+            HiFI demonstrates comparable or beyond state-of-the-art performance on multiple benchmarks (Vimeo, Xiph, X-Test, SEPE-8K).
+            On our newly introduced dataset that focuses on particularly challenging cases, HiFI significantly outperforms all other baselines.
+          </p>
+          <p>
+            Diffusion models are powerful but computationally very expensive. To scale up to 8K resolutions, we introduce a patch-based cascade model that always performs diffusion at the same resolution and upsamples by processing patches of the inputs and the prior solution.
+            We show that this technique drastically reduces memory usage at inference time and also allows us to use a single model at test time, solving both frame interpolation (base model’s task) and spatial up-sampling, saving training cost. 
+          </p>
+        </div>
+        <!--/ Abstract. -->
+
+      </div>
+    </div>
+  </section>
+
+
+  <hr />
+
+  <section class="section">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Method</h2>
+      <img class="network-architecture-fig-large" src="./static/image/architecture_figure/patch-based-cascade.jpg" alt="cascade_training"/>
+      <div style="height: 10px;"></div> <br>
+      <p>
+        The input conditioning images are first downsampled to the lowest resolution. A low-resolution intermediate image is then generated through a denoising process. At the original resolution, a patch-based cascade is employed. This involves creating patches from the bilinearly upsampled low-resolution intermediate image and the two input frames. These patches then serve as conditioning for another denoising process. The denoised patches are combined to reconstruct the full image.
+
+        This recursive, coarse-to-fine approach allows for high-resolution inference using a single, weight-shared model.  For simplicity, the figure illustrates a two-stage cascade. This method not only maintains near-constant peak memory usage during inference but also enables the use of the same architecture for each upsampling level.
+
+      </p>
+      <p>
+        During training, we apply image-level dropout on the low-resolution intermediate conditioning so that the model can also serve as a base model when low-resolution intermediate conditioning is not applied.
+      </p>
+    </div>
+  </section>
+
+
+  <hr />
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <h2 class="title is-3">Qualitative comparison</h2>
+
+      We compare our method with recent state-of-the-art methods (<a href="https://github.com/MCG-NJU/EMA-VFI">EMA-VFI</a> and <a href="https://github.com/srcn-ivl/UPR-Net">UPR-Net</a>) on the challenging <a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a> and our newly proposed LaMoR benchmark. The <b>LaMoR benchmark</b> includes challenging examples such as large motions, repetitive textures, layered motions, and thin objects that most of the existing methods have been struggling with.
+
+      <div style="height: 10px;"></div> <br>
+
+      <div class="content">
+        <h3 class="title is-4"><a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a></h3>
+        <!-- First video comparision container -->
+        <div class="videocomparison-container">
+          <div class="videocomparison-info" data-path="static/video_comparision/x4k_4k_x8"></div>
+          <div class="videocomparison-images">
+            <video class="demo-video" controls muted loop></video>
+          </div>
+
+          <div class="thumbnail-bar">
+            <button class="left-arrow">◀︎</button>
+            <div class="thumbnails-wrapper">
+              <div class="thumbnails">
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/000_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/001_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/002_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/003_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/004_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/005_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/x4k_4k_x8/006_gt_thumbnail.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+            <button class="right-arrow">▶︎</button>
+          </div>
+        </div>
+        <!-- First video comparision container -->
+      </div>
+
+      <div class="content">
+        <h3 class="title is-4">LaMoR benchmark</h3>
+
+        <!-- Second video comparision container -->
+        <div class="videocomparison-container">
+          <div class="videocomparison-info" data-path="static/video_comparision/lamor_x2"></div>
+          <div class="videocomparison-images">
+            <video class="demo-video" controls muted loop></video>
+          </div>
+
+          <div class="thumbnail-bar">
+            <button class="left-arrow">◀︎</button>
+            <div class="thumbnails-wrapper">
+              <div class="thumbnails">
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/000_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/001_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/002_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/003_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/004_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/005_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/lamor_x2/006_gt_thumbnail.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+              <button class="right-arrow">▶︎</button>
+          </div>
+        </div>
+      <!-- Second video comparision container -->
+      </div>
+
+      <div class="content">
+        <h3 class="title is-4">SEPE 8K benchmark</h3>
+
+        <!-- Third video comparision container -->
+        <div class="videocomparison-container">
+          <div class="videocomparison-info" data-path="static/video_comparision/sepe8k_x2"></div>
+          <div class="videocomparison-images">
+            <video class="demo-video" controls muted loop></video>
+          </div>
+
+          <div class="thumbnail-bar">
+            <button class="left-arrow">◀︎</button>
+            <div class="thumbnails-wrapper">
+              <div class="thumbnails">
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/000_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/001_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/002_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/003_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/004_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/005_gt_thumbnail.mp4" type="video/mp4"></video>
+                <video class="thumbnail" controlsList="nodownload" muted loop><source src="static/video_comparision/sepe8k_x2/006_gt_thumbnail.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+              <button class="right-arrow">▶︎</button>
+          </div>
+        </div>
+      <!-- Third video comparision container -->
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr />
+
+<!--   <section class="section">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Acknowledgements</h2>
+      <p>
+        Thanks to ...
+        <font color="red"> Todo - edit </font>
+      </p>
+    </div>
+  </section> -->
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@inproceedings{,
+  title     = {},
+  author    = {},
+  booktitle = {},
+  year      = {},
+}</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              The original template is from <a href="https://nerfies.github.io/">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
