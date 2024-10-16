@@ -83,11 +83,8 @@
                     </span>
                     <span>arXiv</span>
                   </a>
-                </span>
-
-    
+                </span>    
               </div>
-
             </div>
           </div>
         </div>
@@ -154,14 +151,10 @@
           </p>
         </div>
         <!--/ Abstract. -->
-
       </div>
     </div>
   </section>
-
-
   <hr />
-
   <section class="section">
     <div class="container is-max-desktop content">
       <h2 class="title">Method</h2>
@@ -187,12 +180,11 @@
 
       <h2 class="title is-3">Qualitative comparison</h2>
 
-      We compare our method with recent state-of-the-art methods (<a href="https://github.com/MCG-NJU/EMA-VFI">EMA-VFI</a> and <a href="https://github.com/srcn-ivl/UPR-Net">UPR-Net</a>) on the challenging <a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a> and our newly proposed LaMoR benchmark. The <b>LaMoR benchmark</b> includes challenging examples such as large motions, repetitive textures, layered motions, and thin objects that most of the existing methods have been struggling with.
-
+      We compare our method with recent state-of-the-art methods (<a href="https://github.com/MCG-NJU/EMA-VFI">EMA-VFI</a>, <a href="https://github.com/srcn-ivl/UPR-Net">UPR-Net</a>, and <a href="https://github.com/feinanshan/M2M_VFI">M2M-VFI</a>) on the challenging <a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a>, <a href="https://github.com/talshoura/SEPE-8K-Dataset">SEPE-8K dataset</a>, and our newly proposed LaMoR benchmark. The <b>LaMoR benchmark</b> includes challenging examples such as large motions, repetitive textures, layered motions, and thin objects that most of the existing methods have been struggling with.
       <div style="height: 10px;"></div> <br>
-
       <div class="content">
         <h3 class="title is-4"><a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a></h3>
+        Our method outperforms baseline methods on the X-TEST 4K benchmark, effectively handling challenging scenarios including large motion, repetitive textures, and thin structures.
         <!-- First video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/x4k_4k_x8"></div>
@@ -218,17 +210,16 @@
         </div>
         <!-- First video comparision container -->
       </div>
-
+      <div style="height: 10px;"></div> <br>
       <div class="content">
         <h3 class="title is-4">LaMoR benchmark</h3>
-
+        We introduce a Large Motion and Repetitive texture (LaMoR) dataset that includes challenging scenes such as repetitive texture and large motion where typical methods fail. Our method substantially outperforms other baselines on those challenging cases.
         <!-- Second video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/lamor_x2"></div>
           <div class="videocomparison-images">
             <video class="demo-video" controls muted loop></video>
           </div>
-
           <div class="thumbnail-bar">
             <button class="left-arrow">◀︎</button>
             <div class="thumbnails-wrapper">
@@ -247,17 +238,16 @@
         </div>
       <!-- Second video comparision container -->
       </div>
-
+      <div style="height: 10px;"></div> <br>
       <div class="content">
         <h3 class="title is-4">SEPE 8K benchmark</h3>
-
+        Our method can even handle 8K resolution via a patch-based cascade that maintains near-constant peak memory usage, whereas most baselines fail due to out-of-memory issues. This allows for recovering fine detail even in challenging large-motion 8K scenarios.
         <!-- Third video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/sepe8k_x2"></div>
           <div class="videocomparison-images">
             <video class="demo-video" controls muted loop></video>
           </div>
-
           <div class="thumbnail-bar">
             <button class="left-arrow">◀︎</button>
             <div class="thumbnails-wrapper">
@@ -275,7 +265,6 @@
           </div>
         </div>
       <!-- Third video comparision container -->
-
       </div>
 
     </div>
