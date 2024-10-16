@@ -161,10 +161,9 @@
       <img class="network-architecture-fig-large" src="./static/image/architecture_figure/patch-based-cascade.jpg" alt="cascade_training"/>
       <div style="height: 10px;"></div> <br>
       <p>
-        The input conditioning images are first downsampled to the lowest resolution. A low-resolution intermediate image is then generated through a denoising process. At the original resolution, a patch-based cascade is employed. This involves creating patches from the bilinearly upsampled low-resolution intermediate image and the two input frames. These patches then serve as conditioning for another denoising process. The denoised patches are combined to reconstruct the full image.
+        The input conditioning images are first downsampled to the lowest resolution. A low-resolution intermediate image is then generated through a denoising process. Then, at the original resolution, a patch-based cascade creates patches from the bilinearly upsampled low-resolution intermediate image and the two input frames. These patches then serve as conditioning for another denoising process. The denoised patches are combined to reconstruct the full image.
 
-        This recursive, coarse-to-fine approach allows for high-resolution inference using a single, weight-shared model.  For simplicity, the figure illustrates a two-stage cascade. This method not only maintains near-constant peak memory usage during inference but also enables the use of the same architecture for each upsampling level.
-
+        This recursive, coarse-to-fine approach allows for high-resolution inference using a single, weight-shared model.  The figure illustrates a two-stage cascade for simplicity. This method not only maintains near-constant peak memory usage during inference but also enables the use of the same architecture for all upsampling levels.
       </p>
       <p>
         During training, we apply image-level dropout on the low-resolution intermediate conditioning so that the model can also serve as a base model when low-resolution intermediate conditioning is not applied.
