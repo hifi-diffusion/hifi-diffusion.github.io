@@ -160,14 +160,15 @@
       <h2 class="title">Method</h2>
       <img class="network-architecture-fig-large" src="./static/image/architecture_figure/patch-based-cascade.jpg" alt="cascade_training"/>
       <div style="height: 10px;"></div> <br>
+      <div class="content has-text-justified">
       <p>
         The input conditioning images are first downsampled to the lowest resolution. A low-resolution intermediate image is then generated through a denoising process. Then, at the original resolution, a patch-based cascade creates patches from the bilinearly upsampled low-resolution intermediate image and the two input frames. These patches then serve as conditioning for another denoising process. The denoised patches are combined to reconstruct the full image.
-
-        This recursive, coarse-to-fine approach allows for high-resolution inference using a single, weight-shared model.  The figure illustrates a two-stage cascade for simplicity. This method not only maintains near-constant peak memory usage during inference but also enables the use of the same architecture for all upsampling levels.
+        This recursive, coarse-to-fine approach allows for high-resolution inference using a single, weight-shared model while maintaining near-constant peak memory usage during inference.
       </p>
       <p>
         During training, we apply image-level dropout on the low-resolution intermediate conditioning so that the model can also serve as a base model when low-resolution intermediate conditioning is not applied.
       </p>
+      </div>
     </div>
   </section>
 
@@ -178,12 +179,15 @@
     <div class="container is-max-desktop">
 
       <h2 class="title is-3">Qualitative comparison</h2>
-
+      <div class="content has-text-justified">
       We compare our method with recent state-of-the-art methods (<a href="https://github.com/MCG-NJU/EMA-VFI">EMA-VFI</a>, <a href="https://github.com/srcn-ivl/UPR-Net">UPR-Net</a>, and <a href="https://github.com/feinanshan/M2M_VFI">M2M-VFI</a>) on the challenging <a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a>, <a href="https://github.com/talshoura/SEPE-8K-Dataset">SEPE-8K dataset</a>, and our newly proposed LaMoR benchmark. The <b>LaMoR benchmark</b> includes challenging examples such as large motions, repetitive textures, layered motions, and thin objects that most of the existing methods have been struggling with.
+      </div>
       <div style="height: 10px;"></div> <br>
       <div class="content">
         <h3 class="title is-4"><a href="https://github.com/JihyongOh/XVFI">X-TEST 4K benchmark</a></h3>
+        <div class="content has-text-justified">
         Our method outperforms baseline methods on the X-TEST 4K benchmark, effectively handling challenging scenarios including large motion, repetitive textures, and thin structures.
+        </div>
         <!-- First video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/x4k_4k_x8"></div>
@@ -212,7 +216,9 @@
       <div style="height: 10px;"></div> <br>
       <div class="content">
         <h3 class="title is-4">LaMoR benchmark</h3>
+        <div class="content has-text-justified">
         We introduce a Large Motion and Repetitive texture (LaMoR) dataset that includes challenging scenes such as repetitive texture and large motion where typical methods fail. Our method substantially outperforms other baselines on those challenging cases.
+        </div>
         <!-- Second video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/lamor_x2"></div>
@@ -240,7 +246,9 @@
       <div style="height: 10px;"></div> <br>
       <div class="content">
         <h3 class="title is-4">SEPE 8K benchmark</h3>
+        <div class="content has-text-justified">
         Our method can even process 8K resolution via a patch-based cascade that maintains near-constant peak memory usage, whereas most baselines fail due to out-of-memory issues. Our method is able to recover fine details on challenging large motion cases at 8K resolution.
+        </div>
         <!-- Third video comparision container -->
         <div class="videocomparison-container">
           <div class="videocomparison-info" data-path="static/video_comparision/sepe8k_x2"></div>
